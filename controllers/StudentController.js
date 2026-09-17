@@ -1,3 +1,4 @@
+const User = require('../models/User')
 let students = require('../config/db')
 const welcomepage =(req, res) => {
     res.send("Welcome to our student management system")
@@ -47,4 +48,15 @@ const deletestudent = (req,res) => {
    
 }
 
-module.exports = {welcomepage, getallstudents, getstudentsById, deletestudent, updatestudent, insertstudent}
+const addstudentToDB = async (req, res) => {
+    try {
+        const user = new User(req.body)
+        const saved = await user.save()
+
+        res.status(201).json(saved)
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+}
+
+module.exports = {welcomepage, getallstudents, getstudentsById, deletestudent, updatestudent,addstudentToDB, insertstudent}
